@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import * as Yup from "yup";
 import UserModel from "../models/user.model";
+import { encrypt } from "../utils/encryption";
 
 type TRegister = {
   fullName: string;
@@ -10,12 +11,19 @@ type TRegister = {
   confirmPassword: string;
 };
 
+type TLogin = {
+  identifier: string;
+  password: string;
+};
+
 const registerValidateSchema = Yup.object({
   fullName: Yup.string().required(),
   username: Yup.string().required(),
   email: Yup.string().email().required(),
   password: Yup.string().required(),
-  confirmPassword: Yup.string().required().oneOf([Yup.ref("password"), ""], "Passwords not match"),
+  confirmPassword: Yup.string()
+    .required()
+    .oneOf([Yup.ref("password"), ""], "Passwords not match"),
 });
 
 export default {
@@ -42,13 +50,57 @@ export default {
       res.status(200).json({
         message: "Successfully registered",
         data: result,
-      })
+      });
     } catch (error) {
-        const err = error as unknown as Error;
-        res.status(400).json({
-            message: err.message,
-            data: null,
-        })
+      const err = error as unknown as Error;
+      res.status(400).json({
+        message: err.message,
+        data: null,
+      });
+    }
+  },
+  async login(req: Request, res: Response) {
+    const { identifier, password } = req.body as unknown as TLogin;
+    try {
+      // Get data user base on "identifier" -> email and username
+      const userByIdentifier = await UserModel.findOne({
+        $or: [
+          {
+            email: identifier,
+          },
+          {
+            username: identifier,
+          },
+        ],
+      });
+
+      if (!userByIdentifier) {
+        return res.status(403).json({
+          message: "User not found",
+          data: null,
+        });
+      }
+      // Validate password
+      const validatePassword: boolean =
+        encrypt(password) === userByIdentifier.password;
+
+      if (!validatePassword) {
+        return res.status(403).json({
+          message: "User not found",
+          data: null,
+        });
+      }
+
+      res.status(200).json({
+        message: "Successfully login",
+        data: userByIdentifier,
+      });
+    } catch (error) {
+      const err = error as unknown as Error;
+      res.status(400).json({
+        message: err.message,
+        data: null,
+      });
     }
   },
 };

@@ -59,6 +59,12 @@ UserSchema.pre("save", function (){
     user.password = encrypt(user.password);
 });
 
+UserSchema.methods.toJSON = function(){
+    const user = this.toObject();
+    delete user.password;
+    return user;
+}
+
 const UserModel = mongoose.model("User", UserSchema);
 
 export default UserModel;

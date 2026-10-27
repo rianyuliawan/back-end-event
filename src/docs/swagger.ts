@@ -13,7 +13,7 @@ const doc = {
             description: "Local Server",
         },
         {
-            url: "back-end-event-orcin.vercel.app/api",
+            url: "https://back-end-event-orcin.vercel.app/api",
             description: "Deploy Server"
         }
     ],

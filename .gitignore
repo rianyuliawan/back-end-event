@@ -1,3 +1,19 @@
-node_modules
+# Dependencies
+node_modules/
 
+# Environment
 .env
+.env.*
+!.env.example
+
+# Build
+dist/
+build/
+.next/
+out/
+
+# Logs
+*.log
+
+# Vercel
+.vercel/

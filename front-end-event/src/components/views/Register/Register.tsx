@@ -25,14 +25,15 @@ const Register = () => {
   const { visiblePassword, handleVisiblePassword } = useRegister();
 
   return (
-    <div className="flex w-full flex-col items-center justify-center gap-10 lg:flex-row lg:gap-20">
+    <div className="flex w-full max-w-6xl min-w-0 flex-col items-center justify-center gap-10 lg:flex-row lg:gap-20">
       {/* LEFT SIDE - ILLUSTRATION */}
-      <div className="flex w-full flex-col items-center justify-center gap-10 lg:w-1/3">
+      <div className="flex w-full flex-col items-center justify-center gap-6 lg:w-1/3 lg:gap-10">
         <Image
           src="/images/general/logo.svg"
           alt="Event Management Logo"
           width={180}
           height={180}
+          className="h-auto w-45"
         />
 
         <Image
@@ -40,12 +41,13 @@ const Register = () => {
           alt="Register Illustration"
           width={1024}
           height={1024}
-          className="w-2/3 lg:w-full"
+          loading="eager"
+          className="h-auto w-2/3 max-w-full lg:w-full"
         />
       </div>
 
       {/* RIGHT SIDE - REGISTER FORM */}
-      <Card className="w-full max-w-md gap-0 p-8">
+      <Card className="w-full max-w-md min-w-0 gap-0 p-5 sm:p-8">
         {/* HEADER */}
         <div className="mb-6 flex flex-col gap-1">
           <h2 className="text-xl font-bold text-danger">

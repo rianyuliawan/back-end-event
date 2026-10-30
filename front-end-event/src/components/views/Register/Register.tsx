@@ -1,28 +1,34 @@
 "use client";
+import { Controller } from "react-hook-form";
 
 import {
   Button,
   Card,
+  FieldError,
   InputGroup,
   Label,
   Link,
+  Spinner,
   TextField,
 } from "@heroui/react";
 
-import {
-  Person,
-  Envelope,
-  Lock,
-  Eye,
-  EyeSlash,
-} from "@gravity-ui/icons";
+import { Person, Envelope, Lock, Eye, EyeSlash } from "@gravity-ui/icons";
 
 import Image from "next/image";
 import useRegister from "./useRegister";
+import { cn } from "@/utils/cn";
 
 const Register = () => {
   // Mengambil state dan handler dari custom hook
-  const { visiblePassword, handleVisiblePassword } = useRegister();
+  const {
+    visiblePassword,
+    handleVisiblePassword,
+    control,
+    handleSubmit,
+    handleRegister,
+    isPendingRegister,
+    errors,
+  } = useRegister();
 
   return (
     <div className="mx-auto flex w-full max-w-5xl min-w-0 flex-col items-center justify-center gap-8 lg:flex-row lg:gap-6">
@@ -50,181 +56,205 @@ const Register = () => {
       <Card className="mx-auto w-full min-w-0 max-w-md gap-0 p-5 sm:p-8 lg:mx-0">
         {/* HEADER */}
         <div className="mb-6 flex flex-col gap-1">
-          <h2 className="text-xl font-bold text-danger">
-            Create Account
-          </h2>
+          <h2 className="text-xl font-bold text-danger">Create Account</h2>
 
           <p className="text-sm">
             Have an Account?{" "}
-            <Link
-              href="/login"
-              className="font-semibold text-danger"
-            >
+            <Link href="/auth/login" className="font-semibold text-danger">
               Login here
             </Link>
-          </p>
+            </p>
+            {errors.root && (
+              <p className="mb-2 font-medium text-danger">
+                {errors?.root.message}
+              </p>
+            )}
         </div>
 
         {/* FORM */}
-        <form className="flex flex-col gap-4">
-          {/* FULLNAME */}
-          <TextField
+        <form
+          className={cn(
+            "flex flex-col",
+            Object.keys(errors).length > 0 ? "gap-2" : "gap-4",
+          )}
+          onSubmit={handleSubmit(handleRegister)}
+        >
+          <Controller
             name="fullName"
-            type="text"
-            className="flex w-full flex-col gap-1"
-            isRequired
-          >
-            <Label>Fullname</Label>
+            control={control}
+            render={({ field }) => (
+              <TextField
+                type="text"
+                className="flex w-full flex-col gap-1"
+                isInvalid={errors.fullName !== undefined}
+              >
+                <Label>Fullname</Label>
 
-            <InputGroup variant="secondary">
-              <InputGroup.Prefix>
-                <Person className="size-4 text-muted" />
-              </InputGroup.Prefix>
+                <InputGroup variant="secondary">
+                  <InputGroup.Prefix>
+                    <Person className="size-4 text-muted" />
+                  </InputGroup.Prefix>
 
-              <InputGroup.Input
-                placeholder="Enter your fullname"
-                autoComplete="name"
-              />
-            </InputGroup>
-          </TextField>
-
-          {/* USERNAME */}
-          <TextField
+                  <InputGroup.Input
+                    {...field}
+                    placeholder="Enter your fullname"
+                    autoComplete="off"
+                  />
+                </InputGroup>
+                <FieldError>{errors.fullName?.message}</FieldError>
+              </TextField>
+            )}
+          />
+          <Controller
             name="username"
-            type="text"
-            className="flex w-full flex-col gap-1"
-            isRequired
-          >
-            <Label>Username</Label>
+            control={control}
+            render={({ field }) => (
+              <TextField
+                isInvalid={errors.username !== undefined}
+                name="username"
+                type="text"
+                className="flex w-full flex-col gap-1"
+              >
+                <Label>Username</Label>
 
-            <InputGroup variant="secondary">
-              <InputGroup.Prefix>
-                <Person className="size-4 text-muted" />
-              </InputGroup.Prefix>
+                <InputGroup variant="secondary">
+                  <InputGroup.Prefix>
+                    <Person className="size-4 text-muted" />
+                  </InputGroup.Prefix>
 
-              <InputGroup.Input
-                placeholder="Enter your username"
-                autoComplete="username"
-              />
-            </InputGroup>
-          </TextField>
-
-          {/* EMAIL */}
-          <TextField
+                  <InputGroup.Input
+                    {...field}
+                    placeholder="Enter your username"
+                    autoComplete="off"
+                  />
+                </InputGroup>
+                <FieldError>{errors.username?.message}</FieldError>
+              </TextField>
+            )}
+          />
+          <Controller
             name="email"
-            type="email"
-            className="flex w-full flex-col gap-1"
-            isRequired
-          >
-            <Label>Email</Label>
+            control={control}
+            render={({ field }) => (
+              <TextField
+                name="email"
+                type="email"
+                className="flex w-full flex-col gap-1"
+                isInvalid={errors.email !== undefined}
+              >
+                <Label>Email</Label>
 
-            <InputGroup variant="secondary">
-              <InputGroup.Prefix>
-                <Envelope className="size-4 text-muted" />
-              </InputGroup.Prefix>
+                <InputGroup variant="secondary">
+                  <InputGroup.Prefix>
+                    <Envelope className="size-4 text-muted" />
+                  </InputGroup.Prefix>
 
-              <InputGroup.Input
-                placeholder="name@email.com"
-                autoComplete="email"
-              />
-            </InputGroup>
-          </TextField>
-
-          {/* PASSWORD */}
-          <TextField
+                  <InputGroup.Input
+                    {...field}
+                    placeholder="name@email.com"
+                    autoComplete="off"
+                  />
+                </InputGroup>
+                <FieldError>{errors.email?.message}</FieldError>
+              </TextField>
+            )}
+          />
+          <Controller
             name="password"
-            className="flex w-full flex-col gap-1"
-            isRequired
-          >
-            <Label>Password</Label>
+            control={control}
+            render={({ field }) => (
+              <TextField
+                name="password"
+                className="flex w-full flex-col gap-1"
+                isInvalid={errors.password !== undefined}
+              >
+                <Label>Password</Label>
 
-            <InputGroup variant="secondary">
-              <InputGroup.Prefix>
-                <Lock className="size-4 text-muted" />
-              </InputGroup.Prefix>
+                <InputGroup variant="secondary">
+                  <InputGroup.Prefix>
+                    <Lock className="size-4 text-muted" />
+                  </InputGroup.Prefix>
 
-              <InputGroup.Input
-                type={
-                  visiblePassword.password
-                    ? "text"
-                    : "password"
-                }
-                placeholder="Enter your password"
-                autoComplete="new-password"
-              />
+                  <InputGroup.Input
+                    {...field}
+                    type={visiblePassword.password ? "text" : "password"}
+                    placeholder="Enter your password"
+                    autoComplete="off"
+                  />
 
-              <InputGroup.Suffix className="pe-0">
-                <Button
-                  type="button"
-                  isIconOnly
-                  size="sm"
-                  variant="ghost"
-                  aria-label={
-                    visiblePassword.password
-                      ? "Hide password"
-                      : "Show password"
-                  }
-                  onPress={() =>
-                    handleVisiblePassword("password")
-                  }
-                >
-                  {visiblePassword.password ? (
-                    <Eye className="size-4" />
-                  ) : (
-                    <EyeSlash className="size-4" />
-                  )}
-                </Button>
-              </InputGroup.Suffix>
-            </InputGroup>
-          </TextField>
-
-          {/* CONFIRM PASSWORD */}
-          <TextField
+                  <InputGroup.Suffix className="pe-0">
+                    <Button
+                      type="button"
+                      isIconOnly
+                      size="sm"
+                      variant="ghost"
+                      aria-label={
+                        visiblePassword.password
+                          ? "Hide password"
+                          : "Show password"
+                      }
+                      onPress={() => handleVisiblePassword("password")}
+                    >
+                      {visiblePassword.password ? (
+                        <Eye className="size-4" />
+                      ) : (
+                        <EyeSlash className="size-4" />
+                      )}
+                    </Button>
+                  </InputGroup.Suffix>
+                </InputGroup>
+                <FieldError>{errors.password?.message}</FieldError>
+              </TextField>
+            )}
+          />
+          <Controller
             name="confirmPassword"
-            className="flex w-full flex-col gap-1"
-            isRequired
-          >
-            <Label>Confirm Password</Label>
+            control={control}
+            render={({ field }) => (
+              <TextField
+                name="confirmPassword"
+                className="flex w-full flex-col gap-1"
+                isInvalid={errors.confirmPassword !== undefined}
+              >
+                <Label>Confirm Password</Label>
 
-            <InputGroup variant="secondary">
-              <InputGroup.Prefix>
-                <Lock className="size-4 text-muted" />
-              </InputGroup.Prefix>
+                <InputGroup variant="secondary">
+                  <InputGroup.Prefix>
+                    <Lock className="size-4 text-muted" />
+                  </InputGroup.Prefix>
 
-              <InputGroup.Input
-                type={
-                  visiblePassword.passwordConfirmation
-                    ? "text"
-                    : "password"
-                }
-                placeholder="Confirm your password"
-                autoComplete="new-password"
-              />
+                  <InputGroup.Input
+                    {...field}
+                    type={visiblePassword.confirmPassword ? "text" : "password"}
+                    placeholder="Confirm your password"
+                    autoComplete="off"
+                  />
 
-              <InputGroup.Suffix className="pe-0">
-                <Button
-                  type="button"
-                  isIconOnly
-                  size="sm"
-                  variant="ghost"
-                  aria-label={
-                    visiblePassword.passwordConfirmation
-                      ? "Hide confirm password"
-                      : "Show confirm password"
-                  }
-                  onPress={() =>
-                    handleVisiblePassword("passwordConfirmation")
-                  }
-                >
-                  {visiblePassword.passwordConfirmation ? (
-                    <Eye className="size-4" />
-                  ) : (
-                    <EyeSlash className="size-4" />
-                  )}
-                </Button>
-              </InputGroup.Suffix>
-            </InputGroup>
-          </TextField>
+                  <InputGroup.Suffix className="pe-0">
+                    <Button
+                      type="button"
+                      isIconOnly
+                      size="sm"
+                      variant="ghost"
+                      aria-label={
+                        visiblePassword.confirmPassword
+                          ? "Hide confirm password"
+                          : "Show confirm password"
+                      }
+                      onPress={() => handleVisiblePassword("confirmPassword")}
+                    >
+                      {visiblePassword.confirmPassword ? (
+                        <Eye className="size-4" />
+                      ) : (
+                        <EyeSlash className="size-4" />
+                      )}
+                    </Button>
+                  </InputGroup.Suffix>
+                </InputGroup>
+                <FieldError>{errors.confirmPassword?.message}</FieldError>
+              </TextField>
+            )}
+          />
 
           {/* SUBMIT BUTTON */}
           <Button
@@ -233,7 +263,11 @@ const Register = () => {
             size="lg"
             className="mt-3 w-full"
           >
-            Create Account
+            {isPendingRegister ? (
+              <Spinner color="current" size="sm" />
+            ) : (
+              "Create Account"
+            )}
           </Button>
         </form>
       </Card>

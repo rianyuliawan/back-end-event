@@ -25,7 +25,7 @@ const Register = () => {
   const { visiblePassword, handleVisiblePassword } = useRegister();
 
   return (
-    <div className="flex w-full max-w-6xl min-w-0 flex-col items-center justify-center gap-10 lg:flex-row lg:gap-20">
+    <div className="mx-auto flex w-full max-w-5xl min-w-0 flex-col items-center justify-center gap-10 lg:flex-row lg:gap-8">
       {/* LEFT SIDE - ILLUSTRATION */}
       <div className="flex w-full flex-col items-center justify-center gap-6 lg:w-1/3 lg:gap-10">
         <Image
@@ -47,7 +47,7 @@ const Register = () => {
       </div>
 
       {/* RIGHT SIDE - REGISTER FORM */}
-      <Card className="w-full max-w-md min-w-0 gap-0 p-5 sm:p-8">
+      <Card className="w-full max-w-md min-w-0 box-border gap-0 p-5 sm:p-8">
         {/* HEADER */}
         <div className="mb-6 flex flex-col gap-1">
           <h2 className="text-xl font-bold text-danger">

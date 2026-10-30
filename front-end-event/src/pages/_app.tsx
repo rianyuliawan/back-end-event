@@ -12,7 +12,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
       <main className={cn(
         inter.className,
-        "flex min-h-screen w-full min-w-0 box-border flex-col items-center justify-center px-4 py-10 lg:px-10",
+        "flex min-h-screen w-full min-w-0 flex-col items-center justify-center px-4 py-10 lg:px-10",
       )}>
         <Component {...pageProps} />
       </main>

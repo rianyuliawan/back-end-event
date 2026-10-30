@@ -27,7 +27,7 @@ const Register = () => {
   return (
     <div className="mx-auto flex w-full max-w-5xl min-w-0 flex-col items-center justify-center gap-8 lg:flex-row lg:gap-6">
       {/* LEFT SIDE - ILLUSTRATION */}
-      <div className="flex w-full flex-col items-center justify-center gap-6 lg:w-1/3 lg:gap-10">
+      <div className="flex w-full min-w-0 flex-col items-center justify-center gap-6 lg:w-1/3">
         <Image
           src="/images/general/logo.svg"
           alt="Event Management Logo"
@@ -47,7 +47,7 @@ const Register = () => {
       </div>
 
       {/* RIGHT SIDE - REGISTER FORM */}
-      <Card className="w-full min-w-0 max-w-md gap-0 p-5 sm:p-8">
+      <Card className="mx-auto w-full min-w-0 max-w-md gap-0 p-5 sm:p-8 lg:mx-0">
         {/* HEADER */}
         <div className="mb-6 flex flex-col gap-1">
           <h2 className="text-xl font-bold text-danger">

@@ -37,14 +37,14 @@ const Activation = (props: PropTypes) => {
         <h1 className="text-3xl font-bold text-danger">
           {
             status === "success"
-              ? "Activation Successfully"
+              ? "Account activated successfully"
               : "Activation Failed"
           }
         </h1>
         <p className="text-xl font-bold text-default-500">
           {
             status === "success"
-              ? "Thank you for register account in Event"
+              ? "Thank you for creating an account on Event"
               : "Confirmation code is invalid"
           }
         </p>

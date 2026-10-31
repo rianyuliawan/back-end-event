@@ -55,20 +55,28 @@ const Register = () => {
       {/* RIGHT SIDE - REGISTER FORM */}
       <Card className="mx-auto w-full min-w-0 max-w-md gap-0 p-5 sm:p-8 lg:mx-0">
         {/* HEADER */}
-        <div className="mb-6 flex flex-col gap-1">
-          <h2 className="text-xl font-bold text-danger">Create Account</h2>
+        <div className="mb-6">
+          <div className="flex flex-col gap-1">
+            <h2 className="text-xl font-bold text-danger">Create Account</h2>
 
-          <p className="text-sm">
-            Have an Account?{" "}
-            <Link href="/auth/login" className="font-semibold text-danger">
-              Login here
-            </Link>
+            <p className="text-sm">
+              Have an Account?{" "}
+              <Link href="/auth/login" className="font-semibold text-danger">
+                Login here
+              </Link>
             </p>
-            {errors.root && (
-              <p className="mb-2 font-medium text-danger">
-                {errors?.root.message}
+          </div>
+
+          {errors.root && (
+            <div
+              role="alert"
+              className="mt-5 rounded-lg border border-danger/30 bg-danger/5 px-4 py-3"
+            >
+              <p className="text-sm font-medium text-danger">
+                {errors.root.message}
               </p>
-            )}
+            </div>
+          )}
         </div>
 
         {/* FORM */}

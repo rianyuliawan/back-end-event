@@ -12,7 +12,7 @@ export default NextAuth({
   secret: environment.AUTH_SECRET,
   providers: [
     CredentialsProvider({
-      id: "credetials",
+      id: "credentials",
       name: "credentials",
       credentials: {
         identifier: { label: "identifier", type: "text" },
